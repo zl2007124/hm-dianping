@@ -89,10 +89,16 @@ public class CacheClient {
     public <R, ID> R queryWithLogicalExpire(String keyPrefix, ID id, Class<R> type,
                                             Function<ID, R> dbFallback, Long time, TimeUnit unit) {
         String key = keyPrefix + id;
-        //1.查缓存（逻辑过期方案要求提前预热，查不到直接返回 null）
+        //1.查缓存
         String json = stringRedisTemplate.opsForValue().get(key);
+        //1.1 缓存缺失：查库回填（这样缓存被清空/数据量变大也不会"永久查不到"）
         if (StrUtil.isBlank(json)) {
-            return null;
+            R fromDb = dbFallback.apply(id);
+            if (fromDb == null) {
+                return null;
+            }
+            this.setWithLogicalExpire(key, fromDb, time, unit);
+            return fromDb;
         }
         //2.反序列化：先取 RedisData，再取真实对象
         RedisData redisData = JSONUtil.toBean(json, RedisData.class);
