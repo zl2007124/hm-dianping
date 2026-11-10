@@ -50,7 +50,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     }
 
     /**
-     * 预热：查库后写入带逻辑过期时间的缓存
+     * 预热：查库后写入带逻辑过期时间的缓存（讲义里用单元测试手动调用）
      */
     public void saveShop2Redis(Long id, Long expireSeconds) {
         cacheClient.setWithLogicalExpire(CACHE_SHOP_KEY + id, getById(id), expireSeconds, TimeUnit.SECONDS);
