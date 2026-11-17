@@ -49,6 +49,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
  @Resource
  private IFollowService followService ;
 
+
  /** 点赞记录的 Redis key 前缀，结构为 ZSet：member=用户id，score=点赞时间戳 */
  private static final String LIKED_KEY = "blog:liked:";
 
@@ -215,4 +216,5 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
   return Result.ok(r);
  }
+
 }

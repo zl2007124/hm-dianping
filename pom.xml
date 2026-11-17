@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.17.7</version>
+            <version>3.13.6</version>
         </dependency>
         <!--AOP：@EnableAspectJAutoProxy / 事务代理需要 aspectjweaver-->
         <dependency>
